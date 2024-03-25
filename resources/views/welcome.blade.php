@@ -3,9 +3,7 @@
 @section('title', 'Benvenuto | Dashboard')
 @vite('resources/js/app.js')
 @section('style')
-    <style lang="scss">
-       
-    </style>
+    
 @endsection
 
 @section('main')
