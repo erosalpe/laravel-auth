@@ -15,7 +15,7 @@ class ProjectController extends Controller
     {
         $projects = Project::all();
 
-        return view('pages.project.index', compact('projects'));
+        return view('pages.project.dashboard.index', compact('projects'));
     }
 
     /**
@@ -23,7 +23,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.project.dashboard.create');
     }
 
     /**
@@ -31,7 +31,17 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        $val_data = $request->validated();
+
+        $slug = Project::generateSlug($request->title);
+
+        $val_data['slug'] = $slug;
+
+        $newProject = Project::create($val_data);
+
+        $formData = $request->all();
+
+        return redirect()->route('dashboard.projects.index');
     }
 
     /**
@@ -39,7 +49,9 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        $project = Project::find($id);
+
+        return view('dashboard.projects.show', compact('project'));
     }
 
     /**
@@ -47,7 +59,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return view('pages.project.dashboard.edit', compact('project'));
     }
 
     /**
@@ -55,7 +67,15 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $val_data = $request->validated();
+
+        $slug = Project::generateSlug($request->title);
+
+        $val_data['slug'] = $slug;
+
+        $project->update($val_data);
+
+        return redirect()->route('dashboard.projects.index');
     }
 
     /**
@@ -63,6 +83,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+        return redirect()->route('dashboard.projects.index');
     }
 }

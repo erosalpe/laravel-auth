@@ -9,9 +9,6 @@
 
     @vite('resources/js/app.js')
     @yield('style')
-    <style>
-        
-    </style>
 </head>
 
 <body>
