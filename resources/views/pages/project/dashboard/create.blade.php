@@ -12,7 +12,7 @@
 @section('main')
     <h2>Crea nuovo Progetto</h2>
 
-    <form action="{{ route('dashboard.projects.store') }}" method="POST">
+    <form action="{{ route('dashboard.projects.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label for="title" class="form-label">title</label>
@@ -38,7 +38,7 @@
         </div>
         <div class="mb-3">
             <label for="preview" class="form-label">preview</label>
-            <input type="text" class="form-control @error('preview') is-invalid @enderror" id="preview" name="preview" required>
+            <input type="file" class="form-control @error('preview') is-invalid @enderror" id="preview" name="preview">
             @error('preview')
                 <div class="alert alert-danger">
 

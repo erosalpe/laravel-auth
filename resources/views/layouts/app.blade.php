@@ -92,7 +92,7 @@
             </div>
         </nav>
 
-        <main class="">
+        <main class="container pt-5">
             @yield('main')
         </main>
     </div>

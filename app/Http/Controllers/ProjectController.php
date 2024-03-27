@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -37,6 +38,14 @@ class ProjectController extends Controller
 
         $val_data['slug'] = $slug;
 
+        if($request->hasFile('preview')){
+            $path = Storage::disk('public')->put('project_images', $request->preview);
+            $val_data['preview'] = $path;
+        }
+
+
+
+
         $newProject = Project::create($val_data);
 
         $formData = $request->all();
@@ -49,9 +58,9 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        $project = Project::find($id);
+        //dd($project);
 
-        return view('dashboard.projects.show', compact('project'));
+        return view('pages.project.dashboard.show', compact('project'));
     }
 
     /**
@@ -73,6 +82,14 @@ class ProjectController extends Controller
 
         $val_data['slug'] = $slug;
 
+        if ($request->hasFile('preview')){
+            if($project->preview){
+                Storage::delete($project->preview);
+            }
+            $path = Storage::disk('public')->put('preview', $request->preview);
+            $val_data['preview'] = $path;
+        }
+
         $project->update($val_data);
 
         return redirect()->route('dashboard.projects.index');
@@ -83,6 +100,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if($project->preview){
+            Storage::delete($project->preview);
+        }
         $project->delete();
         return redirect()->route('dashboard.projects.index');
     }

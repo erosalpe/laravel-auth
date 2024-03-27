@@ -23,7 +23,7 @@
         </div>
     @endif
 
-    <form action="{{ route('dashboard.projects.update', $project->slug) }}" method="POST">
+    <form action="{{ route('dashboard.projects.update', $project->slug) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="mb-3">
@@ -50,7 +50,10 @@
         </div>
         <div class="mb-3">
             <label for="preview" class="form-label">Anteprima</label>
-            <input type="text" class="form-control @error('preview') is-invalid @enderror" id="preview" name="preview" value="{{old('preview', $project->preview)}}">
+            @if($project->preview)
+                <img src="{{asset('/storage/'. $project->preview)}}" alt="{{$project->title}}">
+            @endif
+                <input type="file" class="form-control @error('preview') is-invalid @enderror" id="preview" name="preview" value="{{old('preview', $project->preview)}}">
             @error('preview')
                 <div class="alert alert-danger">
 
